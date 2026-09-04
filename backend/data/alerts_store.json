@@ -10996,5 +10996,138 @@
     "resolved_by": null,
     "reviewer_notes": null,
     "updated_at": "2026-09-04T13:33:48.795790+00:00"
+  },
+  "ALT-C99C0947": {
+    "alert_id": "ALT-C99C0947",
+    "report_id": "REP-22E132FB",
+    "timestamp": "2026-09-04T17:30:04.181764+00:00",
+    "risk_level": "CRITICAL",
+    "risk_score": 100,
+    "detected_precursors": [
+      "High Pressure Exposure",
+      "Hydrocarbon & Gas Leakage",
+      "Fire / Gas Hazard",
+      "PPE Violation"
+    ],
+    "severity_level": "IV",
+    "recommended_immediate_action": "Enforce strict Stop-Work across all concurrent operations in affected zone.",
+    "alert_status": "NEW",
+    "location": "Compressor Bay #3, Duliajan Rig",
+    "department": "Drilling Operations",
+    "observation_excerpt": "During routine compressor startup at bay 3, severe vibration was observed followed by high-pressure natural gas hissing from flange gasket. Hydrocarbon gas detector alarmed at 35% LEL. Operator evacuated perimeter immedi...",
+    "acknowledged_by": null,
+    "resolved_by": null,
+    "reviewer_notes": null,
+    "updated_at": "2026-09-04T17:30:04.181764+00:00"
+  },
+  "ALT-B8B78FC9": {
+    "alert_id": "ALT-B8B78FC9",
+    "report_id": "REP-3FCDCC5D",
+    "timestamp": "2026-09-04T17:30:28.614586+00:00",
+    "risk_level": "CRITICAL",
+    "risk_score": 95,
+    "detected_precursors": [
+      "High Pressure Exposure",
+      "Hydrocarbon & Gas Leakage",
+      "Fire / Gas Hazard"
+    ],
+    "severity_level": "IV",
+    "recommended_immediate_action": "Enforce strict Stop-Work across all concurrent operations in affected zone.",
+    "alert_status": "NEW",
+    "location": "Field Site",
+    "department": "Drilling Operations",
+    "observation_excerpt": "High-pressure natural gas hissing from separator flange gasket during startup. LEL detector triggered at 40% with gas plume drifting toward compressor station.",
+    "acknowledged_by": null,
+    "resolved_by": null,
+    "reviewer_notes": null,
+    "updated_at": "2026-09-04T17:30:28.614586+00:00"
+  },
+  "ALT-EF281DCD": {
+    "alert_id": "ALT-EF281DCD",
+    "report_id": "REP-20BFB497",
+    "timestamp": "2026-09-04T17:30:39.059822+00:00",
+    "risk_level": "CRITICAL",
+    "risk_score": 95,
+    "detected_precursors": [
+      "High Pressure Exposure",
+      "Hydrocarbon & Gas Leakage",
+      "Fire / Gas Hazard"
+    ],
+    "severity_level": "IV",
+    "recommended_immediate_action": "Enforce strict Stop-Work across all concurrent operations in affected zone.",
+    "alert_status": "NEW",
+    "location": "Field Site",
+    "department": "Drilling Operations",
+    "observation_excerpt": "High-pressure natural gas hissing from separator flange gasket during startup. LEL detector triggered at 40% with gas plume drifting toward compressor station.",
+    "acknowledged_by": null,
+    "resolved_by": null,
+    "reviewer_notes": null,
+    "updated_at": "2026-09-04T17:30:39.059822+00:00"
+  },
+  "ALT-D9BFFB11": {
+    "alert_id": "ALT-D9BFFB11",
+    "report_id": "REP-D93211A7",
+    "timestamp": "2026-09-04T17:30:57.706818+00:00",
+    "risk_level": "CRITICAL",
+    "risk_score": 95,
+    "detected_precursors": [
+      "High Pressure Exposure",
+      "Hydrocarbon & Gas Leakage",
+      "Fire / Gas Hazard"
+    ],
+    "severity_level": "IV",
+    "recommended_immediate_action": "Enforce strict Stop-Work across all concurrent operations in affected zone.",
+    "alert_status": "NEW",
+    "location": "Field Site",
+    "department": "Drilling Operations",
+    "observation_excerpt": "High-pressure natural gas hissing from separator flange gasket during startup. LEL detector triggered at 40% with gas plume drifting toward compressor station.",
+    "acknowledged_by": null,
+    "resolved_by": null,
+    "reviewer_notes": null,
+    "updated_at": "2026-09-04T17:30:57.706818+00:00"
+  },
+  "ALT-821E0596": {
+    "alert_id": "ALT-821E0596",
+    "report_id": "REP-E9830554",
+    "timestamp": "2026-09-04T17:31:08.204446+00:00",
+    "risk_level": "CRITICAL",
+    "risk_score": 95,
+    "detected_precursors": [
+      "High Pressure Exposure",
+      "Hydrocarbon & Gas Leakage",
+      "Fire / Gas Hazard"
+    ],
+    "severity_level": "IV",
+    "recommended_immediate_action": "Enforce strict Stop-Work across all concurrent operations in affected zone.",
+    "alert_status": "NEW",
+    "location": "Field Site",
+    "department": "Drilling Operations",
+    "observation_excerpt": "High-pressure natural gas hissing from separator flange gasket during startup. LEL detector triggered at 40% with gas plume drifting toward compressor station.",
+    "acknowledged_by": null,
+    "resolved_by": null,
+    "reviewer_notes": null,
+    "updated_at": "2026-09-04T17:31:08.204446+00:00"
+  },
+  "ALT-64103A80": {
+    "alert_id": "ALT-64103A80",
+    "report_id": "REP-82529203",
+    "timestamp": "2026-09-04T17:31:26.356691+00:00",
+    "risk_level": "CRITICAL",
+    "risk_score": 95,
+    "detected_precursors": [
+      "High Pressure Exposure",
+      "Hydrocarbon & Gas Leakage",
+      "Fire / Gas Hazard"
+    ],
+    "severity_level": "IV",
+    "recommended_immediate_action": "Enforce strict Stop-Work across all concurrent operations in affected zone.",
+    "alert_status": "NEW",
+    "location": "Field Site",
+    "department": "Drilling Operations",
+    "observation_excerpt": "High-pressure natural gas hissing from separator flange gasket during startup. LEL detector triggered at 40% with gas plume drifting toward compressor station.",
+    "acknowledged_by": null,
+    "resolved_by": null,
+    "reviewer_notes": null,
+    "updated_at": "2026-09-04T17:31:26.356691+00:00"
   }
 }

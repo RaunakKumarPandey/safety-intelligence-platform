@@ -84,6 +84,13 @@ function AnalyticsDashboardContent() {
       setActiveTab("model_performance");
     }
     loadData(user);
+
+    // Auto-poll for live employee submissions every 15 seconds
+    const intervalId = setInterval(() => {
+      loadData(user);
+    }, 15000);
+
+    return () => clearInterval(intervalId);
   }, [viewParam]);
 
   const handleActionStatusChange = async (actionId: string, newStatus: string) => {
@@ -1054,6 +1061,18 @@ function AnalyticsDashboardContent() {
                       </button>
                     ))}
                   </div>
+
+                  {/* Manual Refresh Button */}
+                  <button
+                    type="button"
+                    onClick={() => loadData(currentUser)}
+                    disabled={isLoading}
+                    className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:border-orange-500 hover:text-orange-600 disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 shrink-0"
+                    title="Refresh alerts from cloud database"
+                  >
+                    <span className={`text-xs ${isLoading ? "animate-spin inline-block" : ""}`}>🔄</span>
+                    Refresh
+                  </button>
                 </div>
               </div>
 
@@ -1314,6 +1333,18 @@ function AnalyticsDashboardContent() {
                       </button>
                     ))}
                   </div>
+
+                  {/* Manual Refresh Button */}
+                  <button
+                    type="button"
+                    onClick={() => loadData(currentUser)}
+                    disabled={isLoading}
+                    className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:border-orange-500 hover:text-orange-600 disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 shrink-0"
+                    title="Refresh actions from cloud database"
+                  >
+                    <span className={`text-xs ${isLoading ? "animate-spin inline-block" : ""}`}>🔄</span>
+                    Refresh
+                  </button>
                 </div>
               </div>
 
