@@ -31,6 +31,7 @@ function AnalyticsDashboardContent() {
   const [modelData, setModelData] = useState<ModelPerformanceAnalyticsData | null>(null);
   const [alerts, setAlerts] = useState<SafetyAlertRecord[]>([]);
   const [alertFilter, setAlertFilter] = useState<string>("ALL");
+  const [alertSearchQuery, setAlertSearchQuery] = useState<string>("");
   const [isUpdatingAlert, setIsUpdatingAlert] = useState<string | null>(null);
   const [officerNotes, setOfficerNotes] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +39,7 @@ function AnalyticsDashboardContent() {
   // Corrective Action Tracking State (Task 10)
   const [actions, setActions] = useState<ActionTrackingRecord[]>([]);
   const [actionFilter, setActionFilter] = useState<string>("ALL");
+  const [actionSearchQuery, setActionSearchQuery] = useState<string>("");
   const [actionStats, setActionStats] = useState<ActionTrackingStatistics | null>(null);
   const [isUpdatingAction, setIsUpdatingAction] = useState<string | null>(null);
   const [actionOfficerNotes, setActionOfficerNotes] = useState<Record<string, string>>({});
@@ -136,18 +138,43 @@ function AnalyticsDashboardContent() {
     }
   };
 
-  const filteredAlerts = alertFilter === "ALL"
-    ? alerts
-    : alerts.filter((a) => a.alert_status === alertFilter);
+  const filteredAlerts = alerts.filter((a) => {
+    const matchesStatus = alertFilter === "ALL" || a.alert_status === alertFilter;
+    if (!matchesStatus) return false;
+    if (!alertSearchQuery.trim()) return true;
+    const q = alertSearchQuery.toLowerCase().trim();
+    return (
+      a.alert_id.toLowerCase().includes(q) ||
+      (a.location && a.location.toLowerCase().includes(q)) ||
+      (a.department && a.department.toLowerCase().includes(q)) ||
+      (a.observation_excerpt && a.observation_excerpt.toLowerCase().includes(q)) ||
+      (a.risk_level && a.risk_level.toLowerCase().includes(q)) ||
+      (a.recommended_immediate_action && a.recommended_immediate_action.toLowerCase().includes(q)) ||
+      (a.detected_precursors && a.detected_precursors.some((p) => p.toLowerCase().includes(q)))
+    );
+  });
 
   const newAlertsCount = alerts.filter((a) => a.alert_status === "NEW").length;
   const acknowledgedCount = alerts.filter((a) => a.alert_status === "ACKNOWLEDGED").length;
   const resolvedCount = alerts.filter((a) => a.alert_status === "RESOLVED").length;
 
   const openActionsCount = actions.filter((a) => a.status === "OPEN" || a.status === "IN_PROGRESS").length;
-  const filteredActions = actionFilter === "ALL"
-    ? actions
-    : actions.filter((a) => a.status === actionFilter);
+  const filteredActions = actions.filter((a) => {
+    const matchesStatus = actionFilter === "ALL" || a.status === actionFilter;
+    if (!matchesStatus) return false;
+    if (!actionSearchQuery.trim()) return true;
+    const q = actionSearchQuery.toLowerCase().trim();
+    return (
+      a.action_id.toLowerCase().includes(q) ||
+      (a.report_id && a.report_id.toLowerCase().includes(q)) ||
+      (a.action_description && a.action_description.toLowerCase().includes(q)) ||
+      (a.responsible_role && a.responsible_role.toLowerCase().includes(q)) ||
+      (a.tracking_notes && a.tracking_notes.toLowerCase().includes(q)) ||
+      (a.priority && a.priority.toLowerCase().includes(q)) ||
+      (a.ai_generated_context?.related_precursor && a.ai_generated_context.related_precursor.toLowerCase().includes(q)) ||
+      (a.ai_generated_context?.immediate_control && a.ai_generated_context.immediate_control.toLowerCase().includes(q))
+    );
+  });
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-[#050d0a] dark:text-slate-100">
@@ -968,44 +995,90 @@ function AnalyticsDashboardContent() {
 
             {/* ALERT LIST & TRIAGE */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 dark:border-white/10 dark:bg-[#0a1915]">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5 dark:border-white/10">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 pb-5 dark:border-white/10">
                 <div>
-                  <h2 className="text-lg font-black text-slate-900 dark:text-white">
-                    🚨 Active SIF Risk Alerts Queue
-                  </h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg font-black text-slate-900 dark:text-white">
+                      🚨 Active SIF Risk Alerts Queue
+                    </h2>
+                    {alertSearchQuery.trim() && (
+                      <span className="rounded-full bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-400 px-2.5 py-0.5 text-[10px] font-bold">
+                        {filteredAlerts.length} {filteredAlerts.length === 1 ? "match" : "matches"}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-slate-500 mt-1">
                     Risk-triggered alerts automatically raised for observations scoring HIGH (&ge;50) or CRITICAL (&ge;75).
                   </p>
                 </div>
 
-                {/* Filter Chips */}
-                <div className="flex rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-white/10 dark:bg-white/5">
-                  {["ALL", "NEW", "ACKNOWLEDGED", "RESOLVED"].map((st) => (
-                    <button
-                      key={st}
-                      type="button"
-                      onClick={() => setAlertFilter(st)}
-                      className={`rounded-lg px-3 py-1.5 text-[11px] font-bold transition ${
-                        alertFilter === st
-                          ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
-                          : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                      }`}
-                    >
-                      {st}
-                    </button>
-                  ))}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  {/* Instant Search Bar */}
+                  <div className="relative min-w-[260px]">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+                      🔍
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search ID (e.g. ALT-2B6B), keyword, location..."
+                      value={alertSearchQuery}
+                      onChange={(e) => setAlertSearchQuery(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pl-9 pr-8 text-xs text-slate-900 placeholder-slate-400 transition focus:border-orange-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500 dark:focus:border-orange-500"
+                    />
+                    {alertSearchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setAlertSearchQuery("")}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                        title="Clear search"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Filter Chips */}
+                  <div className="flex rounded-xl border border-slate-200 bg-slate-100 p-1 dark:border-white/10 dark:bg-white/5 shrink-0">
+                    {["ALL", "NEW", "ACKNOWLEDGED", "RESOLVED"].map((st) => (
+                      <button
+                        key={st}
+                        type="button"
+                        onClick={() => setAlertFilter(st)}
+                        className={`rounded-lg px-3 py-1.5 text-[11px] font-bold transition ${
+                          alertFilter === st
+                            ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
+                            : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                        }`}
+                      >
+                        {st}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {filteredAlerts.length === 0 ? (
                 <div className="py-16 text-center">
-                  <p className="text-3xl">🛡️</p>
+                  <p className="text-3xl">🔍</p>
                   <p className="mt-2 text-sm font-bold text-slate-700 dark:text-slate-300">
-                    No alerts found for filter &apos;{alertFilter}&apos;.
+                    {alertSearchQuery
+                      ? `No alerts found matching "${alertSearchQuery}"`
+                      : `No alerts found for filter '${alertFilter}'.`}
                   </p>
                   <p className="mt-1 text-xs text-slate-400">
-                    High or Critical safety reports submitted will automatically register here.
+                    {alertSearchQuery
+                      ? "Try searching for another keyword, location, or clear the search filter."
+                      : "High or Critical safety reports submitted will automatically register here."}
                   </p>
+                  {alertSearchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setAlertSearchQuery("")}
+                      className="mt-4 rounded-xl bg-orange-500 px-4 py-2 text-xs font-bold text-white transition hover:bg-orange-600 shadow-sm"
+                    >
+                      Clear Search Filter
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className="mt-6 divide-y divide-slate-100 dark:divide-white/5">
@@ -1182,44 +1255,90 @@ function AnalyticsDashboardContent() {
 
             {/* Main Action Queue Container */}
             <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-[#0a1915]">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-5 dark:border-white/10">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-5 dark:border-white/10">
                 <div>
-                  <h2 className="text-lg font-black text-slate-900 dark:text-white">
-                    Field Corrective Action Queue
-                  </h2>
-                  <p className="text-xs text-slate-500">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg font-black text-slate-900 dark:text-white">
+                      Field Corrective Action Queue
+                    </h2>
+                    {actionSearchQuery.trim() && (
+                      <span className="rounded-full bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-400 px-2.5 py-0.5 text-[10px] font-bold">
+                        {filteredActions.length} {filteredActions.length === 1 ? "match" : "matches"}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1">
                     Track mitigation lifecycles from AI derivation to physical Safety Officer verification.
                   </p>
                 </div>
 
-                {/* Status Filter Pills */}
-                <div className="flex flex-wrap gap-1.5 rounded-2xl border border-slate-200 bg-slate-50 p-1.5 dark:border-white/5 dark:bg-white/5">
-                  {(["ALL", "OPEN", "IN_PROGRESS", "COMPLETED", "VERIFIED"] as const).map((filter) => (
-                    <button
-                      key={filter}
-                      type="button"
-                      onClick={() => setActionFilter(filter)}
-                      className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
-                        actionFilter === filter
-                          ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
-                          : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                      }`}
-                    >
-                      {filter === "ALL" ? "All Actions" : filter === "IN_PROGRESS" ? "In Progress" : filter.charAt(0) + filter.slice(1).toLowerCase()}
-                    </button>
-                  ))}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  {/* Instant Search Bar */}
+                  <div className="relative min-w-[240px]">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+                      🔍
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search action ID, title, keyword..."
+                      value={actionSearchQuery}
+                      onChange={(e) => setActionSearchQuery(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pl-9 pr-8 text-xs text-slate-900 placeholder-slate-400 transition focus:border-orange-500 focus:bg-white focus:outline-none dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500 dark:focus:border-orange-500"
+                    />
+                    {actionSearchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setActionSearchQuery("")}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                        title="Clear search"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Status Filter Pills */}
+                  <div className="flex flex-wrap gap-1.5 rounded-2xl border border-slate-200 bg-slate-50 p-1.5 dark:border-white/5 dark:bg-white/5 shrink-0">
+                    {(["ALL", "OPEN", "IN_PROGRESS", "COMPLETED", "VERIFIED"] as const).map((filter) => (
+                      <button
+                        key={filter}
+                        type="button"
+                        onClick={() => setActionFilter(filter)}
+                        className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
+                          actionFilter === filter
+                            ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
+                            : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                        }`}
+                      >
+                        {filter === "ALL" ? "All Actions" : filter === "IN_PROGRESS" ? "In Progress" : filter.charAt(0) + filter.slice(1).toLowerCase()}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {filteredActions.length === 0 ? (
                 <div className="mt-8 rounded-2xl border border-dashed border-slate-200 p-12 text-center text-xs text-slate-500 dark:border-white/10">
-                  <div className="text-3xl">✅</div>
+                  <div className="text-3xl">🔍</div>
                   <p className="mt-2 font-bold text-slate-700 dark:text-slate-300">
-                    No actions found matching "{actionFilter}".
+                    {actionSearchQuery
+                      ? `No actions found matching "${actionSearchQuery}"`
+                      : `No actions found matching "${actionFilter}".`}
                   </p>
                   <p className="mt-1 text-slate-400">
-                    When safety reports are analyzed or initiated, their corrective tasks will be tracked here.
+                    {actionSearchQuery
+                      ? "Try searching for another keyword or clear the search filter."
+                      : "When safety reports are analyzed or initiated, their corrective tasks will be tracked here."}
                   </p>
+                  {actionSearchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setActionSearchQuery("")}
+                      className="mt-4 rounded-xl bg-orange-500 px-4 py-2 text-xs font-bold text-white transition hover:bg-orange-600 shadow-sm"
+                    >
+                      Clear Search Filter
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className="mt-6 space-y-4">
