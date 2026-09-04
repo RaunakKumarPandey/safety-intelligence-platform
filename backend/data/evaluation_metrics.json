@@ -1,0 +1,314 @@
+{
+  "model_name": "Calibrated Linear SVM (Platt, Balanced)",
+  "model_type": "Pipeline(tfidf: TfidfVectorizer, classifier: CalibratedClassifierCV)",
+  "model_version": "v2.0.0-honest-evaluation",
+  "random_state": 42,
+  "evaluation": {
+    "dataset": "Untouched Holdout Test Set",
+    "holdout_size": 62,
+    "accuracy": 0.5645161290322581,
+    "macro_precision": 0.48273809523809524,
+    "macro_recall": 0.5077380952380952,
+    "macro_f1": 0.49445378151260505,
+    "weighted_precision": 0.5342741935483871,
+    "weighted_recall": 0.5645161290322581,
+    "weighted_f1": 0.5484503478810878
+  },
+  "per_class": {
+    "Level I": {
+      "precision": 0.8571,
+      "recall": 0.8571,
+      "f1": 0.8571,
+      "support": 7,
+      "false_positives": 1,
+      "false_negatives": 1
+    },
+    "Level II": {
+      "precision": 0.4375,
+      "recall": 0.5,
+      "f1": 0.4667,
+      "support": 14,
+      "false_positives": 9,
+      "false_negatives": 7
+    },
+    "Level III": {
+      "precision": 0.5,
+      "recall": 0.5625,
+      "f1": 0.5294,
+      "support": 16,
+      "false_positives": 9,
+      "false_negatives": 7
+    },
+    "Level IV": {
+      "precision": 0.619,
+      "recall": 0.619,
+      "f1": 0.619,
+      "support": 21,
+      "false_positives": 8,
+      "false_negatives": 8
+    },
+    "Level V": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 4,
+      "false_positives": 0,
+      "false_negatives": 4
+    }
+  },
+  "confusion_matrix": [
+    [
+      6,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      7,
+      4,
+      2,
+      0
+    ],
+    [
+      0,
+      5,
+      9,
+      2,
+      0
+    ],
+    [
+      0,
+      4,
+      4,
+      13,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      3,
+      0
+    ]
+  ],
+  "training": {
+    "development_samples": 349,
+    "training_samples": 287,
+    "validation_samples": 62,
+    "holdout_samples": 62,
+    "external_samples_used": 0,
+    "features": [
+      "cleaned_text (Description)",
+      "industry_sector",
+      "worker_type",
+      "gender"
+    ],
+    "selected_model": "Calibrated Linear SVM (Platt, Balanced)",
+    "hyperparameters": {
+      "ngram_range": [
+        1,
+        2
+      ],
+      "sublinear_tf": true,
+      "max_features": 15000,
+      "C": 1.0,
+      "class_weight": "balanced",
+      "calibration": "sigmoid (cv=5)"
+    }
+  },
+  "deployed_model_test_metrics": {
+    "split": "Holdout Test Set",
+    "sample_count": 62,
+    "accuracy": 0.5645161290322581,
+    "macro_precision": 0.48273809523809524,
+    "macro_recall": 0.5077380952380952,
+    "macro_f1": 0.49445378151260505,
+    "weighted_precision": 0.5342741935483871,
+    "weighted_recall": 0.5645161290322581,
+    "weighted_f1": 0.5484503478810878,
+    "per_class": {
+      "I": {
+        "name": "Level I (Minor)",
+        "precision": 0.8571,
+        "recall": 0.8571,
+        "f1_score": 0.8571,
+        "support": 7,
+        "false_positives": 1,
+        "false_negatives": 1,
+        "true_positives": 6,
+        "true_negatives": 54,
+        "is_safety_critical": false
+      },
+      "II": {
+        "name": "Level II (Moderate)",
+        "precision": 0.4375,
+        "recall": 0.5,
+        "f1_score": 0.4667,
+        "support": 14,
+        "false_positives": 9,
+        "false_negatives": 7,
+        "true_positives": 7,
+        "true_negatives": 39,
+        "is_safety_critical": false
+      },
+      "III": {
+        "name": "Level III (Serious)",
+        "precision": 0.5,
+        "recall": 0.5625,
+        "f1_score": 0.5294,
+        "support": 16,
+        "false_positives": 9,
+        "false_negatives": 7,
+        "true_positives": 9,
+        "true_negatives": 37,
+        "is_safety_critical": false
+      },
+      "IV": {
+        "name": "Level IV (Critical)",
+        "precision": 0.619,
+        "recall": 0.619,
+        "f1_score": 0.619,
+        "support": 21,
+        "false_positives": 8,
+        "false_negatives": 8,
+        "true_positives": 13,
+        "true_negatives": 33,
+        "is_safety_critical": true
+      },
+      "V": {
+        "name": "Level V (Catastrophic)",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "support": 4,
+        "false_positives": 0,
+        "false_negatives": 4,
+        "true_positives": 0,
+        "true_negatives": 58,
+        "is_safety_critical": true
+      }
+    },
+    "confusion_matrix": [
+      [
+        6,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        7,
+        4,
+        2,
+        0
+      ],
+      [
+        0,
+        5,
+        9,
+        2,
+        0
+      ],
+      [
+        0,
+        4,
+        4,
+        13,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        3,
+        0
+      ]
+    ]
+  },
+  "benchmark_comparison": {
+    "Calibrated Linear SVM (Platt, Balanced)": {
+      "dev_cv_accuracy": 0.4354,
+      "dev_cv_macro_f1": 0.377,
+      "dev_cv_weighted_f1": 0.4118,
+      "dev_cv_macro_precision": 0.3789,
+      "dev_cv_macro_recall": 0.3889,
+      "test_accuracy": 0.5645,
+      "test_macro_f1": 0.4945,
+      "test_weighted_f1": 0.5485
+    },
+    "Linear SVM (Raw Balanced)": {
+      "dev_cv_accuracy": 0.424,
+      "dev_cv_macro_f1": 0.3751,
+      "dev_cv_weighted_f1": 0.4087,
+      "dev_cv_macro_precision": 0.375,
+      "dev_cv_macro_recall": 0.3841,
+      "test_accuracy": 0.5323,
+      "test_macro_f1": 0.4685,
+      "test_weighted_f1": 0.5141
+    },
+    "Linear SVM (Raw Unweighted)": {
+      "dev_cv_accuracy": 0.424,
+      "dev_cv_macro_f1": 0.3717,
+      "dev_cv_weighted_f1": 0.4045,
+      "dev_cv_macro_precision": 0.3749,
+      "dev_cv_macro_recall": 0.3807,
+      "test_accuracy": 0.5645,
+      "test_macro_f1": 0.4983,
+      "test_weighted_f1": 0.5453
+    },
+    "Logistic Regression (Balanced)": {
+      "dev_cv_accuracy": 0.401,
+      "dev_cv_macro_f1": 0.3554,
+      "dev_cv_weighted_f1": 0.3845,
+      "dev_cv_macro_precision": 0.3513,
+      "dev_cv_macro_recall": 0.3688,
+      "test_accuracy": 0.4516,
+      "test_macro_f1": 0.4083,
+      "test_weighted_f1": 0.4388
+    },
+    "Logistic Regression (Unweighted)": {
+      "dev_cv_accuracy": 0.4125,
+      "dev_cv_macro_f1": 0.311,
+      "dev_cv_weighted_f1": 0.3629,
+      "dev_cv_macro_precision": 0.4379,
+      "dev_cv_macro_recall": 0.3126,
+      "test_accuracy": 0.4677,
+      "test_macro_f1": 0.3629,
+      "test_weighted_f1": 0.436
+    },
+    "Word + Char TF-IDF Union + LinearSVC (Balanced)": {
+      "dev_cv_accuracy": 0.3925,
+      "dev_cv_macro_f1": 0.35,
+      "dev_cv_weighted_f1": 0.3758,
+      "dev_cv_macro_precision": 0.3509,
+      "dev_cv_macro_recall": 0.3606,
+      "test_accuracy": 0.5484,
+      "test_macro_f1": 0.4715,
+      "test_weighted_f1": 0.5346
+    },
+    "Multinomial Naive Bayes": {
+      "dev_cv_accuracy": 0.4212,
+      "dev_cv_macro_f1": 0.3593,
+      "dev_cv_weighted_f1": 0.3937,
+      "dev_cv_macro_precision": 0.413,
+      "dev_cv_macro_recall": 0.3532,
+      "test_accuracy": 0.5484,
+      "test_macro_f1": 0.4616,
+      "test_weighted_f1": 0.5275
+    },
+    "Random Forest (Balanced)": {
+      "dev_cv_accuracy": 0.318,
+      "dev_cv_macro_f1": 0.2828,
+      "dev_cv_weighted_f1": 0.2716,
+      "dev_cv_macro_precision": 0.3428,
+      "dev_cv_macro_recall": 0.3227,
+      "test_accuracy": 0.3065,
+      "test_macro_f1": 0.2917,
+      "test_weighted_f1": 0.2836
+    }
+  },
+  "evaluation_note": "Evaluated strictly on disjoint 15% holdout test partition (zero data leakage). No synthetic labels or test leakage used."
+}

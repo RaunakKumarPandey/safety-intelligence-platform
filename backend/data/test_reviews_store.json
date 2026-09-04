@@ -1,0 +1,68 @@
+{
+  "REV-98C8DCFB": {
+    "review_id": "REV-98C8DCFB",
+    "report_id": "RPT-51F5E4",
+    "timestamp": "2026-09-04T13:33:47.472921+00:00",
+    "ai_severity": "IV",
+    "ai_risk_score": 75,
+    "detected_precursors": [
+      "Hydrocarbon & Gas Leakage"
+    ],
+    "recommended_actions": [
+      "Isolate upstream emergency shutdown valves."
+    ],
+    "officer_name": "A. Gogoi",
+    "officer_id": "HSE-1104",
+    "officer_decision": "REJECTED",
+    "officer_modified_severity": "I",
+    "officer_comments": "False positive: Planned drill with cold nitrogen, not flammable hydrocarbon.",
+    "ai_prediction": {
+      "overall_risk": {
+        "score": 75,
+        "level": "CRITICAL",
+        "summary": "Compounding gas leak detected."
+      },
+      "severity_prediction": {
+        "potential_accident_level": "IV",
+        "model": "Linear SVM"
+      },
+      "detected_precursors": [
+        {
+          "factor": "leakage",
+          "label": "Hydrocarbon & Gas Leakage",
+          "contribution": 20,
+          "evidence": [
+            "gas leak"
+          ]
+        }
+      ],
+      "recommended_actions": [
+        "Isolate upstream emergency shutdown valves."
+      ]
+    },
+    "human_decision": {
+      "severity": "I",
+      "risk_score": 0,
+      "risk_level": "LOW",
+      "precursors": [],
+      "actions": [
+        "Observation was a routine drill. No active hazard."
+      ]
+    },
+    "final_decision": {
+      "potential_accident_level": "I",
+      "overall_risk_score": 0,
+      "overall_risk_level": "LOW",
+      "confirmed_precursors": [],
+      "authorized_corrective_actions": [
+        "Observation was a routine drill. No active hazard."
+      ],
+      "review_status": "REJECTED",
+      "verified_by_officer": "A. Gogoi",
+      "officer_id": "HSE-1104",
+      "verification_timestamp": "2026-09-04T13:33:47.472921+00:00"
+    },
+    "review_status": "REJECTED",
+    "reviewer_comment": "False positive: Planned drill with cold nitrogen, not flammable hydrocarbon."
+  }
+}
