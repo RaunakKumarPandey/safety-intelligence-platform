@@ -57,12 +57,12 @@ function AnalyticsDashboardContent() {
         Promise<ActionTrackingRecord[]>,
         Promise<ActionTrackingStatistics | null>
       ] = [
-        fetchOperationalAnalytics(),
-        isOfficer ? fetchModelPerformanceAnalytics() : Promise.resolve(null),
-        fetchSafetyAlerts(),
-        fetchTrackedActions(),
-        fetchActionStatistics()
-      ];
+          fetchOperationalAnalytics(),
+          isOfficer ? fetchModelPerformanceAnalytics() : Promise.resolve(null),
+          fetchSafetyAlerts(),
+          fetchTrackedActions(),
+          fetchActionStatistics()
+        ];
 
       const [op, mod, altList, actList, stats] = await Promise.all(promises);
       setOperationalData(op);
@@ -84,13 +84,6 @@ function AnalyticsDashboardContent() {
       setActiveTab("model_performance");
     }
     loadData(user);
-
-    // Auto-poll for live employee submissions every 15 seconds
-    const intervalId = setInterval(() => {
-      loadData(user);
-    }, 15000);
-
-    return () => clearInterval(intervalId);
   }, [viewParam]);
 
   const handleActionStatusChange = async (actionId: string, newStatus: string) => {
@@ -239,33 +232,30 @@ function AnalyticsDashboardContent() {
           <div className="flex flex-wrap rounded-2xl border border-slate-200 bg-slate-100/80 p-1.5 dark:border-white/10 dark:bg-white/5">
             <button
               onClick={() => setActiveTab("operational")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition ${
-                activeTab === "operational"
+              className={`rounded-xl px-4 py-2 text-xs font-bold transition ${activeTab === "operational"
                   ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
                   : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-              }`}
+                }`}
             >
               📊 Operational Analytics
             </button>
             {isSafetyOfficer(currentUser) && (
               <button
                 onClick={() => setActiveTab("model_performance")}
-                className={`rounded-xl px-4 py-2 text-xs font-bold transition ${
-                  activeTab === "model_performance"
+                className={`rounded-xl px-4 py-2 text-xs font-bold transition ${activeTab === "model_performance"
                     ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
                     : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                }`}
+                  }`}
               >
                 🎯 ML Model Validation
               </button>
             )}
             <button
               onClick={() => setActiveTab("alerts")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition flex items-center gap-1.5 ${
-                activeTab === "alerts"
+              className={`rounded-xl px-4 py-2 text-xs font-bold transition flex items-center gap-1.5 ${activeTab === "alerts"
                   ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
                   : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-              }`}
+                }`}
             >
               <span>🚨 SIF Risk Alerts</span>
               {newAlertsCount > 0 && (
@@ -276,11 +266,10 @@ function AnalyticsDashboardContent() {
             </button>
             <button
               onClick={() => setActiveTab("actions")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition flex items-center gap-1.5 ${
-                activeTab === "actions"
+              className={`rounded-xl px-4 py-2 text-xs font-bold transition flex items-center gap-1.5 ${activeTab === "actions"
                   ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
                   : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-              }`}
+                }`}
             >
               <span>📋 Action Tracker</span>
               {openActionsCount > 0 && (
@@ -343,10 +332,10 @@ function AnalyticsDashboardContent() {
                     <p className="mt-3 font-orbitron text-4xl font-black text-red-500">
                       {operationalData.risk_level_distribution
                         ? Math.round(
-                            (operationalData.risk_level_distribution.CRITICAL /
-                              (operationalData.total_reports_analyzed || 1)) *
-                              100
-                          )
+                          (operationalData.risk_level_distribution.CRITICAL /
+                            (operationalData.total_reports_analyzed || 1)) *
+                          100
+                        )
                         : 0}
                       %
                     </p>
@@ -392,17 +381,16 @@ function AnalyticsDashboardContent() {
                               </div>
                               <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
                                 <div
-                                  className={`h-full rounded-full ${
-                                    level === "V"
+                                  className={`h-full rounded-full ${level === "V"
                                       ? "bg-red-500"
                                       : level === "IV"
-                                      ? "bg-orange-500"
-                                      : level === "III"
-                                      ? "bg-amber-500"
-                                      : level === "II"
-                                      ? "bg-yellow-500"
-                                      : "bg-emerald-500"
-                                  }`}
+                                        ? "bg-orange-500"
+                                        : level === "III"
+                                          ? "bg-amber-500"
+                                          : level === "II"
+                                            ? "bg-yellow-500"
+                                            : "bg-emerald-500"
+                                    }`}
                                   style={{ width: `${pct}%` }}
                                 />
                               </div>
@@ -509,13 +497,12 @@ function AnalyticsDashboardContent() {
                                 </td>
                                 <td className="py-4">
                                   <div className="flex items-center gap-2">
-                                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                                      loc.critical_risk_reports > 0
+                                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${loc.critical_risk_reports > 0
                                         ? "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20"
                                         : loc.high_risk_reports > 0
-                                        ? "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20"
-                                        : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
-                                    }`}>
+                                          ? "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20"
+                                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                                      }`}>
                                       {loc.high_risk_reports} High ({loc.high_risk_percentage}%)
                                     </span>
                                     {loc.critical_risk_reports > 0 && (
@@ -558,13 +545,12 @@ function AnalyticsDashboardContent() {
                                   </div>
                                 </td>
                                 <td className="py-4">
-                                  <span className={`font-orbitron font-bold text-xs ${
-                                    loc.average_risk_score >= 50
+                                  <span className={`font-orbitron font-bold text-xs ${loc.average_risk_score >= 50
                                       ? "text-red-500"
                                       : loc.average_risk_score >= 30
-                                      ? "text-orange-500"
-                                      : "text-emerald-500"
-                                  }`}>
+                                        ? "text-orange-500"
+                                        : "text-emerald-500"
+                                    }`}>
                                     {loc.average_risk_score} / 100
                                   </span>
                                 </td>
@@ -856,17 +842,16 @@ function AnalyticsDashboardContent() {
                               <tr key={cls} className="hover:bg-slate-50/50 dark:hover:bg-white/[0.02]">
                                 <td className="py-3 font-bold">
                                   <span
-                                    className={`inline-block w-2.5 h-2.5 rounded-full mr-2 ${
-                                      cls === "V"
+                                    className={`inline-block w-2.5 h-2.5 rounded-full mr-2 ${cls === "V"
                                         ? "bg-red-500"
                                         : cls === "IV"
-                                        ? "bg-orange-500"
-                                        : cls === "III"
-                                        ? "bg-amber-500"
-                                        : cls === "II"
-                                        ? "bg-yellow-500"
-                                        : "bg-emerald-500"
-                                    }`}
+                                          ? "bg-orange-500"
+                                          : cls === "III"
+                                            ? "bg-amber-500"
+                                            : cls === "II"
+                                              ? "bg-yellow-500"
+                                              : "bg-emerald-500"
+                                      }`}
                                   />
                                   {metrics.name}
                                 </td>
@@ -924,13 +909,12 @@ function AnalyticsDashboardContent() {
                                 {row.map((val, cIdx) => (
                                   <td
                                     key={cIdx}
-                                    className={`py-3 font-bold ${
-                                      rIdx === cIdx
+                                    className={`py-3 font-bold ${rIdx === cIdx
                                         ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                                         : val > 0
-                                        ? "bg-orange-500/5 text-orange-600"
-                                        : "text-slate-300 dark:text-slate-600"
-                                    }`}
+                                          ? "bg-orange-500/5 text-orange-600"
+                                          : "text-slate-300 dark:text-slate-600"
+                                      }`}
                                   >
                                     {val}
                                   </td>
@@ -1051,28 +1035,15 @@ function AnalyticsDashboardContent() {
                         key={st}
                         type="button"
                         onClick={() => setAlertFilter(st)}
-                        className={`rounded-lg px-3 py-1.5 text-[11px] font-bold transition ${
-                          alertFilter === st
+                        className={`rounded-lg px-3 py-1.5 text-[11px] font-bold transition ${alertFilter === st
                             ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
                             : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                        }`}
+                          }`}
                       >
                         {st}
                       </button>
                     ))}
                   </div>
-
-                  {/* Manual Refresh Button */}
-                  <button
-                    type="button"
-                    onClick={() => loadData(currentUser)}
-                    disabled={isLoading}
-                    className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:border-orange-500 hover:text-orange-600 disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 shrink-0"
-                    title="Refresh alerts from cloud database"
-                  >
-                    <span className={`text-xs ${isLoading ? "animate-spin inline-block" : ""}`}>🔄</span>
-                    Refresh
-                  </button>
                 </div>
               </div>
 
@@ -1111,11 +1082,10 @@ function AnalyticsDashboardContent() {
                             </span>
 
                             <span
-                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold ${
-                                alt.risk_level === "CRITICAL"
+                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold ${alt.risk_level === "CRITICAL"
                                   ? "bg-red-500/10 text-red-600 dark:text-red-400"
                                   : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                              }`}
+                                }`}
                             >
                               RISK: {alt.risk_level} ({alt.risk_score}/100)
                             </span>
@@ -1125,13 +1095,12 @@ function AnalyticsDashboardContent() {
                             </span>
 
                             <span
-                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                                alt.alert_status === "NEW"
+                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${alt.alert_status === "NEW"
                                   ? "bg-red-500 text-white animate-pulse"
                                   : alt.alert_status === "ACKNOWLEDGED"
-                                  ? "bg-amber-500 text-white"
-                                  : "bg-emerald-500 text-white"
-                              }`}
+                                    ? "bg-amber-500 text-white"
+                                    : "bg-emerald-500 text-white"
+                                }`}
                             >
                               STATUS: {alt.alert_status}
                             </span>
@@ -1323,28 +1292,15 @@ function AnalyticsDashboardContent() {
                         key={filter}
                         type="button"
                         onClick={() => setActionFilter(filter)}
-                        className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
-                          actionFilter === filter
+                        className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${actionFilter === filter
                             ? "bg-white text-orange-600 shadow-sm dark:bg-[#0a1915] dark:text-orange-400"
                             : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                        }`}
+                          }`}
                       >
                         {filter === "ALL" ? "All Actions" : filter === "IN_PROGRESS" ? "In Progress" : filter.charAt(0) + filter.slice(1).toLowerCase()}
                       </button>
                     ))}
                   </div>
-
-                  {/* Manual Refresh Button */}
-                  <button
-                    type="button"
-                    onClick={() => loadData(currentUser)}
-                    disabled={isLoading}
-                    className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:border-orange-500 hover:text-orange-600 disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 shrink-0"
-                    title="Refresh actions from cloud database"
-                  >
-                    <span className={`text-xs ${isLoading ? "animate-spin inline-block" : ""}`}>🔄</span>
-                    Refresh
-                  </button>
                 </div>
               </div>
 
@@ -1388,26 +1344,24 @@ function AnalyticsDashboardContent() {
                               • Ref: {act.report_id}
                             </span>
                             <span
-                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                                act.priority === "IMMEDIATE"
+                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${act.priority === "IMMEDIATE"
                                   ? "bg-red-500/10 text-red-600 border border-red-500/20"
                                   : act.priority === "HIGH"
-                                  ? "bg-orange-500/10 text-orange-600 border border-orange-500/20"
-                                  : "bg-blue-500/10 text-blue-600 border border-blue-500/20"
-                              }`}
+                                    ? "bg-orange-500/10 text-orange-600 border border-orange-500/20"
+                                    : "bg-blue-500/10 text-blue-600 border border-blue-500/20"
+                                }`}
                             >
                               {act.priority} PRIORITY
                             </span>
                             <span
-                              className={`rounded-full px-3 py-0.5 text-[10px] font-black uppercase ${
-                                act.status === "VERIFIED"
+                              className={`rounded-full px-3 py-0.5 text-[10px] font-black uppercase ${act.status === "VERIFIED"
                                   ? "bg-emerald-500/15 text-emerald-600 border border-emerald-500/30 dark:text-emerald-400"
                                   : act.status === "COMPLETED"
-                                  ? "bg-indigo-500/15 text-indigo-600 border border-indigo-500/30 dark:text-indigo-400"
-                                  : act.status === "IN_PROGRESS"
-                                  ? "bg-amber-500/15 text-amber-600 border border-amber-500/30 dark:text-amber-400"
-                                  : "bg-slate-200 text-slate-700 dark:bg-white/10 dark:text-slate-300"
-                              }`}
+                                    ? "bg-indigo-500/15 text-indigo-600 border border-indigo-500/30 dark:text-indigo-400"
+                                    : act.status === "IN_PROGRESS"
+                                      ? "bg-amber-500/15 text-amber-600 border border-amber-500/30 dark:text-amber-400"
+                                      : "bg-slate-200 text-slate-700 dark:bg-white/10 dark:text-slate-300"
+                                }`}
                             >
                               {act.status === "VERIFIED" ? "✓ VERIFIED" : act.status}
                             </span>

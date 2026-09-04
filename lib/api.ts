@@ -123,7 +123,13 @@ export interface AnalysisResponse {
   };
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const DEFAULT_CLOUD_API_URL = "https://safety-intelligence-backend.onrender.com";
+
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1"
+    ? DEFAULT_CLOUD_API_URL
+    : (process.env.NODE_ENV === "production" ? DEFAULT_CLOUD_API_URL : "http://127.0.0.1:8000"));
 
 export async function checkBackendHealth(timeoutMs = 3000): Promise<boolean> {
   const controller = new AbortController();
